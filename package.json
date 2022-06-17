@@ -2,11 +2,11 @@
   "name": "modo-take-home",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "scripts/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "devStart": "nodemon server.js"
+    "devStart": "nodemon scripts/server.js"
   },
   "author": "",
   "license": "ISC",

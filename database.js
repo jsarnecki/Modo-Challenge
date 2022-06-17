@@ -29,24 +29,26 @@ client.connect();
 
 
 const getUserByEmail = function(email) {
-  client.query('SELECT email FROM users WHERE email = $1;', [email])
+
+  client.query('SELECT * FROM users WHERE email = $1;', [email])
   .then((res) => {
     if (!res.rows.length) {
       return undefined;
     }
     console.log("This is the email recieved inside:", email);
-    console.log("Res.rows:", res.rows[0].email);
+    console.log("Res.rows:", res.rows[0]);
 
-    return res.rows[0].email;
+    return res.rows[0];
     client.end();
   })
   .catch((err) => {
       console.log(err);
     })
+    
 }
   
   
-  // let result = getUserByEmail("josh@devc.com");
+  // let result = getUserByEmail("josh@dev.com");
   // console.log(result);
 
 // Create function to fund users by id
@@ -84,8 +86,8 @@ const getVehicleInfo = function() {
     })
 }
 
-let result = getVehicleInfo();
-console.log(result);
+
+
 
 // We need 2 queries 
 // 1: For logging in

@@ -31,6 +31,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+// Keeps the session running
 
 app.get('/', (req, res) => {
   // If not logged in, render login page

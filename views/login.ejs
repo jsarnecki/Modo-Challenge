@@ -11,14 +11,14 @@
   <%= messages.error %>
 <% } %>
 <body>
-  <div>
+  <div id="form">
     <form action="/login" method="POST">
       <div>
-        <label for="email">Email Address</label><br>
+        <label class="label" for="email">Email Address</label><br>
         <input type="email" id="email" name="email" required>
       </div>
       <div>
-        <label for="password">Password</label><br>
+        <label class="label" for="password">Password</label><br>
         <input type="password" id="password" name="password" required>
       </div>
       <button type="submit">Login</button>
