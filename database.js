@@ -1,6 +1,9 @@
+// if (process.env.NODE_ENV !== 'production') {
+//   require('dotenv').config();
+// }
+
 const { Client } = require('pg');
-require('dotenv').config();
-const { HOST, PASSWORD, USER, DB } = require('./constants');
+// const { HOST, PASSWORD, USER, DB } = require('./constants');
 
 const client = new Client({
   host: HOST,
