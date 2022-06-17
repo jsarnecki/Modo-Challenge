@@ -13,14 +13,13 @@ function initialize(passport, getUserByEmail, getUserById) {
           return done(null, false, { message: 'Email not found'});
         }
         console.log("Here I am, this is user:", user);
-        const poop = user;
 
         if (bcrypt.compareSync(password, user.password)) {
           
           console.log("password matched");
 
           passport.serializeUser((user, done) => {
-            console.log("serializing... user id:", user["id"], user, poop);
+            console.log("serializing... user id:", user["id"], user);
             return done(null, user["id"])
           }); //To store inside session
 
