@@ -1,9 +1,9 @@
 body {
- background-color: aqua;  
+ background-color: red;  
 }
 
 #form {
-
+  align-items: center;
 }
 
 .label {

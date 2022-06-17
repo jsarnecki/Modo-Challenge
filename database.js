@@ -30,20 +30,20 @@ client.connect();
 
 const getUserByEmail = function(email) {
 
-  client.query('SELECT * FROM users WHERE email = $1;', [email])
-  .then((res) => {
-    if (!res.rows.length) {
-      return undefined;
-    }
-    console.log("This is the email recieved inside:", email);
-    console.log("Res.rows:", res.rows[0]);
+  return client.query('SELECT * FROM users WHERE email = $1;', [email])
+    .then((res) => {
+      if (!res.rows.length) {
+        return undefined;
+      }
+      console.log("This is the email recieved inside:", email);
+      console.log("Res.rows:", res.rows[0]);
 
-    return res.rows[0];
-    client.end();
-  })
-  .catch((err) => {
-      console.log(err);
+      return res.rows[0];
+      client.end();
     })
+    .catch((err) => {
+        console.log(err);
+      })
     
 }
   
@@ -53,37 +53,37 @@ const getUserByEmail = function(email) {
 
 // Create function to fund users by id
 const getUserById = function(id) {
-  client.query('SELECT id FROM users WHERE id = $1;', [id])
-  .then((res) => {
-    if (res.rows.length) {
-      return res.rows[0].id;
-    } else {
-      console.log(undefined);
-      client.end();
-      return undefined;
-    }
-  })
-  .catch((err) => {
-      console.log(err);
+  return client.query('SELECT id FROM users WHERE id = $1;', [id])
+    .then((res) => {
+      if (res.rows.length) {
+        return res.rows[0].id;
+      } else {
+        console.log(undefined);
+        client.end();
+        return undefined;
+      }
     })
+    .catch((err) => {
+        console.log(err);
+      })
 }
 
 
 // Retrieve all vehicle info
 const getVehicleInfo = function() {
-  client.query('SELECT * FROM vehicles;')
-  .then((res) => {
-    if (!res.rows.length) {
-      return undefined;
-    }
-    console.log("Res.rows:", res.rows);
-    client.end();
+  return client.query('SELECT * FROM vehicles;')
+    .then((res) => {
+      if (!res.rows.length) {
+        return undefined;
+      }
+      console.log("Res.rows:", res.rows);
+      client.end();
 
-    return res.rows;
-  })
-  .catch((err) => {
-      console.log(err);
+      return res.rows;
     })
+    .catch((err) => {
+        console.log(err);
+      })
 }
 
 
