@@ -31,13 +31,14 @@ client.connect();
 const getUserByEmail = function(email) {
   client.query('SELECT email FROM users WHERE email = $1;', [email])
   .then((res) => {
-    if (res.rows.length) {
-      return res.rows[0].email;
-    } else {
-      console.log(undefined);
-      client.end();
+    if (!res.rows.length) {
       return undefined;
     }
+    console.log("This is the email recieved inside:", email);
+    console.log("Res.rows:", res.rows[0].email);
+
+    return res.rows[0].email;
+    client.end();
   })
   .catch((err) => {
       console.log(err);
@@ -49,8 +50,42 @@ const getUserByEmail = function(email) {
   // console.log(result);
 
 // Create function to fund users by id
+const getUserById = function(id) {
+  client.query('SELECT id FROM users WHERE id = $1;', [id])
+  .then((res) => {
+    if (res.rows.length) {
+      return res.rows[0].id;
+    } else {
+      console.log(undefined);
+      client.end();
+      return undefined;
+    }
+  })
+  .catch((err) => {
+      console.log(err);
+    })
+}
 
 
+// Retrieve all vehicle info
+const getVehicleInfo = function() {
+  client.query('SELECT * FROM vehicles;')
+  .then((res) => {
+    if (!res.rows.length) {
+      return undefined;
+    }
+    console.log("Res.rows:", res.rows);
+    client.end();
+
+    return res.rows;
+  })
+  .catch((err) => {
+      console.log(err);
+    })
+}
+
+let result = getVehicleInfo();
+console.log(result);
 
 // We need 2 queries 
 // 1: For logging in
@@ -60,3 +95,8 @@ const getUserByEmail = function(email) {
 // Once logged in, get vehicle page
 
 // Vehicle page shows information about each vehicle in the database in separate flex box divs
+
+module.exports = {
+  getUserByEmail,
+  getUserById
+}

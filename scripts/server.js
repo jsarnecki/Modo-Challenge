@@ -8,12 +8,14 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const flash = require('express-flash');
 const session = require('express-session');
-
 const initializePassport = require('./passport-config');
+
+const { getUserByEmail, getUserById } = require('../database');
 
 initializePassport(
   passport, 
-  // PULL EMAIL FROM DATABASE
+  getUserByEmail,
+  getUserById
 );
 
 app.set('view-engine', 'ejs');
@@ -33,16 +35,18 @@ app.use(passport.session());
 app.get('/', (req, res) => {
   // If not logged in, render login page
 
-  res.render('login.ejs', {name: "test"});
+  res.render('login.ejs', {
+    name: "test",
+  });
 });
 
-app.get('/login', (req, res) => {
-  res.render('login.ejs');
+app.get('/vehicles', (req, res) => {
+  res.render('index.ejs');
 });
 
 app.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/login',
+  successRedirect: '/vehicles',
+  failureRedirect: '/',
   failureFlash: true
 }));
 
