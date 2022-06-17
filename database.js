@@ -3,7 +3,7 @@
 // }
 
 const { Client } = require('pg');
-// const { HOST, PASSWORD, USER, DB } = require('./constants');
+const { HOST, PASSWORD, USER, DB } = require('./constants');
 
 const client = new Client({
   host: HOST,
@@ -15,14 +15,41 @@ const client = new Client({
 
 client.connect();
 
-client.query('SELECT * FROM users;')
+// Create function to find users by email
+// Take in an email
+// Uses the email in the query, and returns the email if true, undefined if false
+// const getUserByEmail = async function(email) {
+//   try {
+//     return await client.query('SELECT * FROM users WHERE email = $1;', [email]);
+//   } catch (e) {
+//     throw error;
+//   }
+// }
+
+
+
+const getUserByEmail = function(email) {
+  client.query('SELECT email FROM users WHERE email = $1;', [email])
   .then((res) => {
-    console.log(res.rows);
-    client.end();
+    if (res.rows.length) {
+      return res.rows[0].email;
+    } else {
+      console.log(undefined);
+      client.end();
+      return undefined;
+    }
   })
   .catch((err) => {
-    console.log(err);
-  })
+      console.log(err);
+    })
+}
+  
+  
+  // let result = getUserByEmail("josh@devc.com");
+  // console.log(result);
+
+// Create function to fund users by id
+
 
 
 // We need 2 queries 

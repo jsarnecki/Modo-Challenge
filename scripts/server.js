@@ -19,6 +19,7 @@ initializePassport(
 app.set('view-engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
 // Allows usage from forms via req from post methods
+
 app.use(flash());
 app.use(session({
   secret: process.env.SESSION_SECRET,
