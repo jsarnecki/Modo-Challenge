@@ -35,8 +35,8 @@ const getUserByEmail = function(email) {
       if (!res.rows.length) {
         return undefined;
       }
-      console.log("This is the email recieved inside:", email);
-      console.log("Res.rows:", res.rows[0]);
+      // console.log("This is the email recieved inside:", email);
+      // console.log("Res.rows:", res.rows[0]);
 
       return res.rows[0];
       client.end();
