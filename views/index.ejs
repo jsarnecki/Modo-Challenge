@@ -12,21 +12,20 @@
 </div>
   <hr>
   <body>
-
     <div class="vehicle-container">
 
         <% if (!vehicles) { %>
           <div class="vehicle">No vehciles availiable</div>
         <% } else { %>
 
-        <% vehicles.forEach(function(v) { %>
-          <div class="vehicle"> 
-            <p>Vehicle #: <%= v.id %></p>
-            <strong><%= v.make %> <%= v.model %></strong><br>
-            Color: <%= v.color %><br>
-            <%= v.location_description %>
-          </div>
-        <% }) %>
+          <% vehicles.forEach(function(v) { %>
+            <div class="vehicle"> 
+              <p>Vehicle #: <%= v.id %></p>
+              <strong><%= v.make %> <%= v.model %></strong><br>
+              Color: <%= v.color %><br>
+              <%= v.location_description %>
+            </div>
+          <% }) %>
 
         <% } %>
     </div>

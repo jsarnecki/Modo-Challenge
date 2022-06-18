@@ -28,12 +28,13 @@ body {
   border-radius: 5%;
 }
 
-/* .error-parent {
+.error-parent {
   text-align: center;
 }
 
 .error {
+  font-size: 1em;
   display: inline;
   color: red;
   position: relative;
-} */
+}

@@ -1,17 +1,15 @@
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
-
 const express = require('express');
-const app = express();
 const bcrypt = require('bcrypt');
 const flash = require('express-flash');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const jwt = require("jsonwebtoken");
-
 const { getUserByEmail, getVehicleInfo } = require('../database');
 
+const app = express();
 
 app.set('view-engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
@@ -19,7 +17,6 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(express.static(('public')));
 app.use(cookieParser());
-
 app.use(flash());
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -27,19 +24,20 @@ app.use(session({
   saveUninitialized: false
 }));
 
+let error = null;
 
 app.get('/', (req, res) => {
-  // If not logged in, render login page
-  
   res.redirect('/login');
 });
+
 
 app.get('/login', (req, res) => {
   // If not logged in, render login page
 
   res.render('login.ejs', {
-    message: null
+    message: error
   });
+  error = null;
 });
 
 app.get('/vehicles', authenticateToken, (req, res) => {
@@ -63,49 +61,41 @@ app.post('/login', (req, res) => {
   console.log("req.email:", req.body.email);
   
   getUserByEmail(req.body.email)
-      .then((user) => {
-        // user returns the user object
+    .then((user) => {
 
+      if (!user) {
+        console.log("User not valid");
+        // return res.send("Email not valid");
+        error = "Email invalid";
+        res.redirect('/login');
+      }
+      
+      if (bcrypt.compareSync(req.body.password, user.password)) {
         
-        if (!user) {
-          console.log("User not valid");
-          return res.send("Email not valid");
-          // res.render('login.ejs', {
-          //   message: "Invalid email"
-          // });
-        }
+        console.log("password matched");
         
-        console.log("Here I am, this is user:", user);
+        const username = req.body.email;
+        const user = { name: username };
         
-        if (bcrypt.compareSync(req.body.password, user.password)) {
-          
-          console.log("password matched");
-          
-          const username = req.body.email;
-          const user = { name: username };
-          
-          const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+        const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
 
-          res.cookie("access-token", accessToken, {
-            maxAge: 86400000, // 24hrs
-            httpOnly: true
-          });
-  
-          console.log("Accesstoken:", accessToken);
-          console.log("req.headers:", req.headers);
-          res.redirect('/vehicles');
-        } else {
-          return res.send("Password not valid");
+        res.cookie("access-token", accessToken, {
+          maxAge: 86400000, // 24hrs
+          httpOnly: true
+        });
 
-        }
-      })
-      .catch((e) => {
-        console.log("Caught error:", e);
-        return res.sendStatus(403);
-    });
-
-
-
+        console.log("Accesstoken:", accessToken);
+        console.log("req.headers:", req.headers);
+        res.redirect('/vehicles');
+      } else {
+        error = "Invalid password";
+        res.redirect('/login');
+      }
+    })
+    .catch((e) => {
+      console.log("Caught error:", e);
+      return res.sendStatus(403);
+  });
 });
 
 function authenticateToken(req, res, next) { //Middleware
@@ -115,16 +105,17 @@ function authenticateToken(req, res, next) { //Middleware
 
   if (!token) {
     console.log("token is null");
-    return res.status(400).json({ error: "Invalid authetication" });
-    // res.redirect('/login', {
-    //   message: "Authentication failed"
-    // });
+    // return res.status(400).json({ error: "Invalid authetication" });
+    error = "Invalid authentication";
+    res.redirect('/login');
   }
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) {
       console.log("Token no longer valid");
-      return res.status(400).json({ error: err }); //Token is no longer valid
+      // return res.status(400).json({ error: err }); //Token is no longer valid
+      error = "Invalid authentication";
+      res.redirect('/login');
     }
     req.authenticated = true;
     return next(); // Moves on to the route this middleware authenticated
