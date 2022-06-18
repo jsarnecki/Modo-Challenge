@@ -5,25 +5,28 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/style/index.css" type="text/css">
-  <title>Document</title>
+  <title>Vehicles</title>
 </head>
-<body>
-  <div class="vehicle-container">
+<h2>All Vehicles</h2>
+  <hr>
+  <body>
 
-      <% if (!vehicles) { %>
-        <div class="vehicle">No vehciles availiable</div>
-      <% } else { %>
+    <div class="vehicle-container">
 
-      <% vehicles.forEach(function(v) { %>
-        <div class="vehicle"> 
-          Vehicle #: <%= v.id %><br>
-          <strong><%= v.make %><%= v.model %></strong><br>
-          Color: <%= v.color %><br>
-          <%= v.location_description %>
-        </div>
-      <% }) %>
+        <% if (!vehicles) { %>
+          <div class="vehicle">No vehciles availiable</div>
+        <% } else { %>
 
-      <% } %>
-  </div>
-</body>
+        <% vehicles.forEach(function(v) { %>
+          <div class="vehicle"> 
+            Vehicle #: <%= v.id %><br>
+            <strong><%= v.make %><%= v.model %></strong><br>
+            Color: <%= v.color %><br>
+            <%= v.location_description %>
+          </div>
+        <% }) %>
+
+        <% } %>
+    </div>
+  </body>
 </html>
