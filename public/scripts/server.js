@@ -22,94 +22,98 @@ app.use(session({
 }));
 
 let error = null;
+// For flash message errors
 
 app.get('/', (req, res) => {
   res.redirect('/login');
 });
 
-
 app.get('/login', (req, res) => {
-  // If not logged in, render login page
-
   res.render('login.ejs', {
     message: error
+    // For flash error message if assigned, else is null
   });
   error = null;
 });
 
 app.get('/vehicles', authenticateToken, (req, res) => {
-  // Query vehicle info to load into here and send thru the render
 
   getVehicleInfo()
-  .then((vehicles) => {
-    console.log("vehicles:", vehicles);
-    
-    res.render('index.ejs', {
-      vehicles
+    .then((vehicles) => {
+      // Retrieves vehicle data as array of objects
+      res.render('index.ejs', {
+        vehicles
+      });
+    })
+    .catch((err) => {
+      console.log("Caught error:", err);
+      return res.sendStatus(403).json(err);
     });
-  })
 
 });
 
-
 app.post('/login', (req, res) => {
-  // Authenticate user
-  // Use email to find in user in database
-  console.log("req.email:", req.body.email);
-  
+
   getUserByEmail(req.body.email)
     .then((user) => {
 
       if (!user) {
-        console.log("User not valid");
-        // return res.send("Email not valid");
+        // If no user email was found in database
         error = "Invalid email";
+        // Flash error message
         res.redirect('/login');
       }
       
       if (bcrypt.compareSync(req.body.password, user.password)) {
+        // Bcrypt compare sync the hashed password in the db with password input
         
-        console.log("password matched");
-        
-        const username = req.body.email;
-        const user = { name: username };
-        
+        const email = req.body.email;
+        const user = { name: email };
+        // Saves just email as user to sign onto json web token
         const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+        // Creates token with token secret saved in .env
 
         res.cookie("access-token", accessToken, {
+          // Saves the created token in a cookie
           maxAge: 86400000, // 24hrs
           httpOnly: true
+          // HttpOnly prevent client-side scripts from accessing the data
         });
 
         res.redirect('/vehicles');
+
       } else {
+        // If password compare is invalid
         error = "Invalid password";
+        // Flash error message
         res.redirect('/login');
       }
     })
-    .catch((e) => {
-      console.log("Caught error:", e);
-      return res.sendStatus(403).json(e);
+    .catch((err) => {
+      console.log("Caught error:", err);
+      return res.sendStatus(403).json(err);
   });
+
 });
 
-function authenticateToken(req, res, next) { //Middleware
-
+function authenticateToken(req, res, next) { 
+// Middleware to authenticate the token within the cookie
   const token = req.cookies["access-token"];
-  console.log("token:", token);
 
   if (!token) {
-    console.log("token is null");
-    return res.status(401).json("Authentication invalid"); //Token is no longer valid
+    // If token does not exist, throw 401 error
+    return res.status(401).json("Authentication invalid"); 
   }
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    // Using token secret from .env, verifies the authenticity
     if (err) {
-      console.log("Token no longer valid");
+      // Token is no longer valid
       return res.status(401).json(err); //Token is no longer valid
     }
     req.authenticated = true;
-    return next(); // Moves on to the route this middleware authenticated
+    // Moves on to the route this middleware authenticated
+    return next(); 
   });
 };
 

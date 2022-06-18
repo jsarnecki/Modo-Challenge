@@ -1,6 +1,6 @@
 const { Client } = require('pg');
 const { HOST, PASSWORD, USER, DB } = require('./constants');
-
+// Please contact me know if you require access to constants/.env to access database
 const client = new Client({
   host: HOST,
   user: USER,
@@ -12,7 +12,7 @@ const client = new Client({
 client.connect();
 
 const getUserByEmail = function(email) {
-
+// Returns user matching passed email from database if exists, undefined if it does not
   return client.query('SELECT * FROM users WHERE email = $1;', [email])
     .then((res) => {
       
@@ -24,13 +24,13 @@ const getUserByEmail = function(email) {
     })
     .catch((err) => {
         console.log(err);
+        res.send(err);
+        client.end();
     });
-}
+};
 
-
-// Retrieve all vehicle info
 const getVehicleInfo = function() {
-
+// Returns array of objects of vehicle data from db if exists, undefined if not
   return client.query('SELECT * FROM vehicles;')
     .then((res) => {
 
@@ -44,8 +44,8 @@ const getVehicleInfo = function() {
       console.log(err);
       res.send(err);
       client.end();
-    })
-}
+    });
+};
 
 module.exports = {
   getUserByEmail,

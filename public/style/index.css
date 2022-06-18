@@ -10,8 +10,8 @@ hr {
 }
 
 #logo {
-  margin: auto 8px;
   width: 30px;
+  margin: auto 8px;
 }
 
 .title {
@@ -36,14 +36,14 @@ h2 {
 }
 
 .vehicle {
+  font-weight: 300;
+  border-radius: 3px;
   background-color: white;
   min-width: 101px;
   max-width: 150px;
   margin: 15px;
   margin-left: 2.5%;
   margin-right: 2.5%;
-  border-radius: 3px;
   padding: 40px;
   box-shadow: 1.5px 1.5px 1.5px 1.5px rgb(212, 219, 218);
-  font-weight: 300;
 }

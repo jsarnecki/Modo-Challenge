@@ -20,12 +20,12 @@ body {
 }
 
 .login-button {
-  margin-top: 10px;
-  color: white;
-  background-color: blue;
   width: 100%;
   border-color: none;
   border-radius: 5%;
+  background-color: blue;
+  color: white;
+  margin-top: 10px;
 }
 
 .error-parent {
@@ -33,8 +33,8 @@ body {
 }
 
 .error {
-  font-size: 1em;
-  display: inline;
-  color: red;
   position: relative;
+  display: inline;
+  font-size: 1em;
+  color: red;
 }
