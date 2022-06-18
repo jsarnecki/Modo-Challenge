@@ -1,11 +1,26 @@
 body {
- background-color: red;  
+ background-color: rgb(223, 240, 238);  
 }
 
 #form {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  min-height: 95vh;
   align-items: center;
+
 }
 
 .label {
+  margin-top: 100px;
   color: blue;
+}
+
+.login-button {
+  margin-top: 30px;
+  color: white;
+  background-color: blue;
+  width: 100%;
+  border-color: none;
+  border-radius: 5%;
 }
