@@ -39,13 +39,15 @@ app.use(session({
 app.get('/', (req, res) => {
   // If not logged in, render login page
 
-  res.render('login.ejs', {
-    name: "test",
-  });
+  res.render('login.ejs');
 });
 
-app.get('/vehicles', authenticateToken, (req, res) => {
-  res.render('index.ejs');
+app.get('/vehicles', (req, res) => {
+  // Query vehicle info to load into here and send thru the render
+
+  res.render('index.ejs', {
+    name: "test",
+  });
 });
 
 // app.post('/login', passport.authenticate('local', {
@@ -57,16 +59,60 @@ app.get('/vehicles', authenticateToken, (req, res) => {
 app.post('/login', (req, res) => {
   // Authenticate user
 
-  const username = req.body.username
-  const user = { name: user }
+  // Use email to find in user in database
 
-  jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-  res.json({ accessToken: accessToken });
+  console.log("req.email:", req.body.email);
+  
+  getUserByEmail(req.body.email)
+      .then((user) => {
+        // user returns the user object
+
+        console.log("Here is your user:", user);
+
+        if (!user) {
+          console.log("User not valid");
+          return res.sendStatus(403);
+        }
+
+        console.log("Here I am, this is user:", user);
+
+        if (bcrypt.compareSync(req.body.password, user.password)) {
+          
+          console.log("password matched");
+
+          // const username = req.body.email
+          // const user = { name: user }
+
+          // jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+          // res.json({ accessToken: accessToken });
+
+          res.redirect('/vehicles');
+        }
+      })
+      .catch((e) => {
+        console.log("Caught error:", e);
+        return res.sendStatus(403);
+    });
+
+  // Authenticate with bcrypt
+
+
 });
 
-function authenticateToken(req, res, nex) { //Middleware
-
-}
+function authenticateToken(req, res, next) { //Middleware
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; //Bearer token
+  if (token === null) {
+    return res.sendStatus(401);
+  }
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) {
+      return res.sendStatus(403); //Token is no longer valid
+    }
+    req.user = user;
+    next(); // Moves on to the route this middleware authenticated
+  })
+};
 
 app.listen(3009, () => {
   console.log("Listening on 3009");
