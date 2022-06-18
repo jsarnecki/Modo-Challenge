@@ -15,18 +15,6 @@ const client = new Client({
 
 client.connect();
 
-// Create function to find users by email
-// Take in an email
-// Uses the email in the query, and returns the email if true, undefined if false
-// const getUserByEmail = async function(email) {
-//   try {
-//     return await client.query('SELECT * FROM users WHERE email = $1;', [email]);
-//   } catch (e) {
-//     throw error;
-//   }
-// }
-
-
 
 const getUserByEmail = function(email) {
 
@@ -36,7 +24,7 @@ const getUserByEmail = function(email) {
         return undefined;
       }
       // console.log("This is the email recieved inside:", email);
-      // console.log("Res.rows:", res.rows[0]);
+      console.log("Res.rows:", res.rows[0]);
 
       return res.rows[0];
       client.end();
@@ -46,8 +34,7 @@ const getUserByEmail = function(email) {
       })
     
 }
-  
-  
+
   // let result = getUserByEmail("josh@dev.com");
   // console.log(result);
 

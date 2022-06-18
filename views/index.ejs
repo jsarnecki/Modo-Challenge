@@ -7,12 +7,22 @@
   <title>Document</title>
 </head>
 <body>
-  <div>
-    <ul>
+  <div class="vehicle-container">
+
+      <% if (!vehicles) { %>
+        <div>No vehciles availiable</div>
+      <% } else { %>
+
       <% vehicles.forEach(function(v) { %>
-        <li>Vehicle: <%= v.model %></li>
+        <div class="vehicle"> 
+          Vehicle #: <%= v.id %><br>
+          <strong><%= v.make %><%= v.model %></strong><br>
+          Color: <%= v.color %><br>
+          <%= v.location_description %>
+        </div>
       <% }) %>
-    </ul>
+
+      <% } %>
   </div>
 </body>
 </html>
