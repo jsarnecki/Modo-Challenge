@@ -12,13 +12,11 @@ body {
   margin: auto;
   min-height: 95vh;
   align-items: center;
- 
 }
 
-
 .label {
-  margin-top: 100px;
   color: blue;
+  width: 100%;
 }
 
 .login-button {
@@ -30,7 +28,7 @@ body {
   border-radius: 5%;
 }
 
-.error-parent {
+/* .error-parent {
   text-align: center;
 }
 
@@ -38,4 +36,4 @@ body {
   display: inline;
   color: red;
   position: relative;
-}
+} */

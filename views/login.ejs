@@ -8,21 +8,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
   <title>Login</title>
 </head>
-
-
 <body>
-  
-  
-
-
   <div id="form">
     <form action="/login" method="POST">
-      <div>
-        <label class="label" for="email">Email Address</label><br>
+      <div class="label">
+        <label  for="email">Email Address</label><br>
         <input type="email" id="email" name="email" required>
       </div>
-      <div>
-        <label class="label" for="password">Password</label><br>
+      <div class="label">
+        <label  for="password">Password</label><br>
         <input type="password" id="password" name="password" required>
       </div>
       <% if (message) { %>
