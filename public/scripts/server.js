@@ -1,23 +1,20 @@
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
-}
+};
 const express = require('express');
 const bcrypt = require('bcrypt');
-const flash = require('express-flash');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const jwt = require("jsonwebtoken");
-const { getUserByEmail, getVehicleInfo } = require('../database');
+const { getUserByEmail, getVehicleInfo } = require('../../database');
 
 const app = express();
-
 app.set('view-engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
 // Allows usage from forms via req from post methods
 
 app.use(express.static(('public')));
 app.use(cookieParser());
-app.use(flash());
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -66,7 +63,7 @@ app.post('/login', (req, res) => {
       if (!user) {
         console.log("User not valid");
         // return res.send("Email not valid");
-        error = "Email invalid";
+        error = "Invalid email";
         res.redirect('/login');
       }
       
@@ -84,8 +81,6 @@ app.post('/login', (req, res) => {
           httpOnly: true
         });
 
-        console.log("Accesstoken:", accessToken);
-        console.log("req.headers:", req.headers);
         res.redirect('/vehicles');
       } else {
         error = "Invalid password";
@@ -94,7 +89,7 @@ app.post('/login', (req, res) => {
     })
     .catch((e) => {
       console.log("Caught error:", e);
-      return res.sendStatus(403);
+      return res.sendStatus(403).json(e);
   });
 });
 
@@ -105,17 +100,13 @@ function authenticateToken(req, res, next) { //Middleware
 
   if (!token) {
     console.log("token is null");
-    // return res.status(400).json({ error: "Invalid authetication" });
-    error = "Invalid authentication";
-    res.redirect('/login');
+    return res.status(401).json("Authentication invalid"); //Token is no longer valid
   }
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) {
       console.log("Token no longer valid");
-      // return res.status(400).json({ error: err }); //Token is no longer valid
-      error = "Invalid authentication";
-      res.redirect('/login');
+      return res.status(401).json(err); //Token is no longer valid
     }
     req.authenticated = true;
     return next(); // Moves on to the route this middleware authenticated
