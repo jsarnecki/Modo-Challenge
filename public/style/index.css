@@ -1,5 +1,9 @@
 * {
- background-color: rgb(223, 240, 238);  
+ background-color: rgb(234, 243, 242);  
+}
+
+p, strong {
+  background-color: white;
 }
 
 .vehicle-container {
@@ -13,7 +17,7 @@
   min-width: 101px;
   max-width: 150px;
   margin: 15px;
-  border-radius: 5px;
+  border-radius: 3px;
   padding: 40px;
-  box-shadow: 2px 2px 2px 2px rgb(114, 113, 113);
+  box-shadow: 1.5px 1.5px 1.5px 1.5px rgb(212, 219, 218);
 }

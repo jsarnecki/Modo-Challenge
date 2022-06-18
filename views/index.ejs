@@ -19,8 +19,8 @@
 
         <% vehicles.forEach(function(v) { %>
           <div class="vehicle"> 
-            Vehicle #: <%= v.id %><br>
-            <strong><%= v.make %><%= v.model %></strong><br>
+            <p>Vehicle #: <%= v.id %></p>
+            <strong><%= v.make %> <%= v.model %></strong><br>
             Color: <%= v.color %><br>
             <%= v.location_description %>
           </div>
