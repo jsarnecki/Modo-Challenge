@@ -38,23 +38,6 @@ const getUserByEmail = function(email) {
   // let result = getUserByEmail("josh@dev.com");
   // console.log(result);
 
-// Create function to fund users by id
-const getUserById = function(id) {
-  return client.query('SELECT id FROM users WHERE id = $1;', [id])
-    .then((res) => {
-      if (res.rows.length) {
-        return res.rows[0].id;
-      } else {
-        console.log(undefined);
-        client.end();
-        return undefined;
-      }
-    })
-    .catch((err) => {
-        console.log(err);
-      })
-}
-
 
 // Retrieve all vehicle info
 const getVehicleInfo = function() {

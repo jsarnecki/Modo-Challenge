@@ -1,0 +1,10 @@
+.vehicle-container {
+  display: flex;
+}
+
+.vehicle {
+  margin: 30px;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 5px 5px black;
+}
