@@ -70,7 +70,8 @@ app.post('/login', (req, res) => {
           const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
 
           res.cookie("access-token", accessToken, {
-            maxAge: 86400000 // 24hrs
+            maxAge: 86400000, // 24hrs
+            httpOnly: true
           });
   
           console.log("Accesstoken:", accessToken);
