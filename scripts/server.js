@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
   res.render('login.ejs');
 });
 
-app.get('/vehicles',  (req, res) => {
+app.get('/vehicles', authenticateToken, (req, res) => {
   // Query vehicle info to load into here and send thru the render
 
   res.render('index.ejs', {
@@ -91,21 +91,23 @@ app.post('/login', (req, res) => {
 });
 
 function authenticateToken(req, res, next) { //Middleware
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1]; //Bearer token
+
+  const token = req.cookies["access-token"];
   console.log("token:", token);
+
   if (!token) {
     console.log("token is null");
-    return res.sendStatus(401);
+    return res.status(400).json({ error: "Invalid authetication" });
   }
+
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) {
       console.log("Token no longer valid");
-      return res.sendStatus(403); //Token is no longer valid
+      return res.status(400).json({ error: err }); //Token is no longer valid
     }
-    req.user = user;
-    next(); // Moves on to the route this middleware authenticated
-  })
+    req.authenticated = true;
+    return next(); // Moves on to the route this middleware authenticated
+  });
 };
 
 app.listen(3009, () => {
