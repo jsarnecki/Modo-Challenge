@@ -1,6 +1,6 @@
 const { Client } = require('pg');
 const { HOST, PASSWORD, USER, DB } = require('./constants');
-// Please contact me know if you require access to constants/.env to access database
+// Please contact me if you require access to constants/.env to access database
 const client = new Client({
   host: HOST,
   user: USER,
@@ -23,7 +23,7 @@ const getUserByEmail = function(email) {
       return res.rows[0];
     })
     .catch((err) => {
-        console.log(err);
+        console.log("Caught error:", err);
         res.send(err);
         client.end();
     });
@@ -41,7 +41,7 @@ const getVehicleInfo = function() {
       return res.rows;
     })
     .catch((err) => {
-      console.log(err);
+      console.log("Caught error:", err);
       res.send(err);
       client.end();
     });

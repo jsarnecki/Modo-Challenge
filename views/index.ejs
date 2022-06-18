@@ -19,6 +19,7 @@
         <% } else { %>
 
           <% vehicles.forEach(function(v) { %>
+    <!-- Loops through vehicles arr of objs, creating own separate div containers-->
             <div class="vehicle"> 
               <p>Vehicle #: <%= v.id %></p>
               <strong><%= v.make %> <%= v.model %></strong><br>

@@ -22,7 +22,7 @@ app.use(session({
 }));
 
 let error = null;
-// For flash message errors
+// For flash error messages
 
 app.get('/', (req, res) => {
   res.redirect('/login');
