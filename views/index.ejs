@@ -7,6 +7,12 @@
   <title>Document</title>
 </head>
 <body>
-  Here I am. This is a <%= name %>
+  <div>
+    <ul>
+      <% vehicles.forEach(function(v) { %>
+        <li>Vehicle: <%= v.model %></li>
+      <% }) %>
+    </ul>
+  </div>
 </body>
 </html>

@@ -8,11 +8,12 @@
   <title>Login</title>
 </head>
 
-<% if (messages.error) { %>
-  <%= messages.error %>
-<% } %>
 
 <body>
+  
+  
+
+
   <div id="form">
     <form action="/login" method="POST">
       <div>
@@ -23,6 +24,11 @@
         <label class="label" for="password">Password</label><br>
         <input type="password" id="password" name="password" required>
       </div>
+      <% if (message) { %>
+        <div class="error-parent">
+          <span class="error"><%= message %></span>
+        </div>
+      <% } %>
       <button class="login-button" type="submit">Login</button>
     </form>
   </div>

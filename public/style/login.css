@@ -17,10 +17,20 @@ body {
 }
 
 .login-button {
-  margin-top: 30px;
+  margin-top: 10px;
   color: white;
   background-color: blue;
   width: 100%;
   border-color: none;
   border-radius: 5%;
+}
+
+.error-parent {
+  text-align: center;
+}
+
+.error {
+  display: inline;
+  color: red;
+  position: relative;
 }

@@ -100,5 +100,5 @@ const getVehicleInfo = function() {
 
 module.exports = {
   getUserByEmail,
-  getUserById
+  getVehicleInfo
 }

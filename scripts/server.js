@@ -10,7 +10,7 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const jwt = require("jsonwebtoken");
 
-const { getUserByEmail, getUserById } = require('../database');
+const { getUserByEmail, getVehicleInfo } = require('../database');
 
 
 app.set('view-engine', 'ejs');
@@ -30,16 +30,30 @@ app.use(session({
 
 app.get('/', (req, res) => {
   // If not logged in, render login page
+  
+  res.redirect('/login');
+});
 
-  res.render('login.ejs');
+app.get('/login', (req, res) => {
+  // If not logged in, render login page
+
+  res.render('login.ejs', {
+    message: null
+  });
 });
 
 app.get('/vehicles', authenticateToken, (req, res) => {
   // Query vehicle info to load into here and send thru the render
 
-  res.render('index.ejs', {
-    name: "test",
-  });
+  getVehicleInfo()
+  .then((vehicles) => {
+    console.log("vehicles:", vehicles);
+    
+    res.render('index.ejs', {
+      vehicles
+    });
+  })
+
 });
 
 
@@ -56,6 +70,9 @@ app.post('/login', (req, res) => {
         if (!user) {
           console.log("User not valid");
           return res.send("Email not valid");
+          // res.render('login.ejs', {
+          //   message: "Invalid email"
+          // });
         }
         
         console.log("Here I am, this is user:", user);
@@ -99,6 +116,9 @@ function authenticateToken(req, res, next) { //Middleware
   if (!token) {
     console.log("token is null");
     return res.status(400).json({ error: "Invalid authetication" });
+    // res.redirect('/login', {
+    //   message: "Authentication failed"
+    // });
   }
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
