@@ -1,6 +1,6 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt');
-const { USER } = require('../constants');
+const { USER } = require('../../constants');
 const LocalStrategy = require('passport-local').Strategy;
 
 function initialize(passport, getUserByEmail, getUserById) {

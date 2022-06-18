@@ -23,7 +23,7 @@ app.set('view-engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
 // Allows usage from forms via req from post methods
 
-// app.use(express.static(path.join(__dirname, '../', 'style')));
+app.use(express.static(('public')));
 
 app.use(flash());
 app.use(session({
@@ -50,17 +50,10 @@ app.get('/vehicles', (req, res) => {
   });
 });
 
-// app.post('/login', passport.authenticate('local', {
-//   successRedirect: '/vehicles',
-//   failureRedirect: '/',
-//   failureFlash: true
-// }));
 
 app.post('/login', (req, res) => {
   // Authenticate user
-
   // Use email to find in user in database
-
   console.log("req.email:", req.body.email);
   
   getUserByEmail(req.body.email)
@@ -71,7 +64,7 @@ app.post('/login', (req, res) => {
 
         if (!user) {
           console.log("User not valid");
-          return res.sendStatus(403);
+          return res.send("Email not valid");
         }
 
         console.log("Here I am, this is user:", user);
@@ -87,6 +80,9 @@ app.post('/login', (req, res) => {
           // res.json({ accessToken: accessToken });
 
           res.redirect('/vehicles');
+        } else {
+          return res.send("Password not valid");
+
         }
       })
       .catch((e) => {
@@ -94,7 +90,6 @@ app.post('/login', (req, res) => {
         return res.sendStatus(403);
     });
 
-  // Authenticate with bcrypt
 
 
 });
