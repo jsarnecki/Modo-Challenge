@@ -4,9 +4,9 @@ For this challenge, I decided to use EJS on the frontend, and JavaScript on the 
 
 ## Screenshots
 
-!["Login"]()
+!["Login"](https://github.com/jsarnecki/Modo-Challenge/blob/master/public/Screenshot%20from%202022-06-18%2015-54-21.png?raw=true)
 
-!["Vehicles"]()
+!["Vehicles"](https://github.com/jsarnecki/Modo-Challenge/blob/master/public/Screenshot%20from%202022-06-18%2014-56-45.png?raw=true)
 
 ## Dependencies
 
